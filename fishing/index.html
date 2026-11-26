@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TIDEWRIGHT | سنانير مصنوعة يدويًا (نسخة تجريبية)</title>
+<style>
+:root{--cyan:#19b5e0;--blue:#1493e0;--deep:#0a3d91;--ink:#12293f;--paper:#f4f7fa}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:auto}
+body{font-family:"Helvetica Neue",Arial,"Noto Sans Arabic",sans-serif;color:var(--ink);background:var(--blue);overflow-x:hidden}
+.ar{font-family:"Helvetica Neue",Arial,"Noto Sans Arabic",sans-serif;letter-spacing:0!important;text-indent:0!important}
+canvas#gl{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;z-index:1;pointer-events:none}
+section{position:relative;height:100vh;height:100dvh;overflow:hidden}
+.c{position:relative;z-index:2;height:100%;padding:0 6vw}
+.ph{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat}
+video.phv{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+nav{position:fixed;z-index:5;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:16px 6vw;font-size:11px;letter-spacing:.22em;color:#fff;text-shadow:0 1px 10px rgba(3,20,50,.45);transition:color .3s}
+nav.light{color:var(--ink);text-shadow:none}
+nav:before{content:"";position:absolute;left:0;right:0;top:0;height:68px;background:linear-gradient(rgba(4,20,45,.26),transparent);z-index:-1;pointer-events:none}
+nav.light:before{background:none}
+nav b{font-weight:400;letter-spacing:.36em}
+nav span{opacity:.82}
+
+/* signature hollow-outline display type */
+.hollow{color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:1.25px currentColor}
+.hollow.w{-webkit-text-stroke-color:#fff}
+.hollow.d{-webkit-text-stroke-color:var(--ink)}
+
+/* light-ray shafts over underwater scenes */
+.rays{position:absolute;inset:-20% -30%;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:.38;
+background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(255,255,255,.20) 90px,transparent 150px);
+-webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 70%);mask-image:linear-gradient(180deg,#000 0%,transparent 70%)}
+
+.hero .ph{background-image:url('../assets/photo/hero_v.jpg');background-size:235% auto;background-position:34% 46%;filter:saturate(1.34) contrast(1.42) brightness(.90)}
+.hero video.phv{object-position:34% 46%;filter:saturate(1.34) contrast(1.42) brightness(.90)}
+.hero .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(95% 55% at 14% 22%,rgba(90,238,255,.55),transparent 58%),radial-gradient(110% 90% at 50% 45%,transparent 42%,rgba(10,130,218,.58) 88%),linear-gradient(180deg,rgba(22,188,244,.20) 0%,rgba(10,132,218,.04) 40%,rgba(4,56,142,.62) 100%)}
+.hero h1{position:absolute;top:36%;left:0;right:0;text-align:center;font-weight:200;font-size:min(11.8vw,148px);letter-spacing:.085em;text-indent:.085em;line-height:1;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:1.4px #fff;text-shadow:0 2px 24px rgba(0,35,90,.22)}
+.hero p{position:absolute;top:calc(36% + min(11.8vw,148px)*.95 + 14px);width:100%;left:0;text-align:center;color:rgba(242,250,255,.94);font-size:11px;letter-spacing:.26em;text-shadow:0 1px 12px rgba(0,35,85,.55)}
+.hint{position:absolute;bottom:28px;left:0;right:0;text-align:center;color:#fff;font-size:10px;letter-spacing:.3em;z-index:3;animation:b 2s infinite}
+@keyframes b{50%{transform:translateY(6px)}}
+
+.splash{background:#7ad8f7}
+.splash video.phv{object-position:50% 80%;transform:scale(1.42);transform-origin:50% 82%;filter:brightness(1.52) contrast(.86) saturate(1.32) hue-rotate(-6deg)}
+.splash .ph{background-image:url('../assets/photo/splash.jpg');background-size:cover;background-position:50% 80%;transform:scale(1.42);transform-origin:50% 82%;filter:brightness(1.52) contrast(.86) saturate(1.32) hue-rotate(-6deg)}
+.splash .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(85% 60% at 48% 66%,rgba(255,255,255,.52),transparent 62%),linear-gradient(180deg,rgba(155,230,255,.54) 0%,rgba(65,198,245,.20) 55%,rgba(30,170,238,.36) 100%)}
+
+.cast{background:#eaf4fc}
+.cast .ph{background-image:url('../assets/photo/cast_bright.jpg');background-size:185% auto;background-position:80% 84%;transform:rotate(7deg) scale(1.32);transform-origin:82% 72%;filter:brightness(1.38) contrast(1.06) saturate(.70)}
+.cast .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(110% 70% at 88% 12%,rgba(128,204,250,.56),transparent 60%),linear-gradient(180deg,rgba(225,243,254,.48) 0%,rgba(242,249,255,.26) 52%,rgba(230,244,253,.14) 84%,rgba(165,220,248,.92) 92%,rgba(145,212,245,.96) 100%)}
+
+.sky{background:#e8dcf0}
+.sky .ph{background-image:url('../assets/photo/sky.jpg');background-position:44% 40%;transform:scale(1.12);filter:brightness(1.18) contrast(.92) saturate(.88)}
+.sky .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(228,200,236,.58) 0%,rgba(248,224,238,.28) 46%,rgba(255,255,255,.04) 76%,rgba(48,204,245,.58) 100%)}
+
+.white{background:var(--paper)}
+.white>.c>h2{position:absolute;left:6vw;top:11%;font-weight:200;font-size:clamp(28px,6.8vw,62px);line-height:1.05;letter-spacing:.04em;text-transform:uppercase}
+.btn{display:inline-block;background:var(--cyan);color:#fff;font-size:10px;letter-spacing:.2em;padding:11px 20px;border-radius:4px;text-decoration:none;position:absolute;box-shadow:0 4px 14px rgba(25,181,224,.28)}
+.small{position:absolute;font-size:11px;line-height:1.6;max-width:240px;color:#4a6585}
+
+.grip{background:linear-gradient(180deg,#eceff7,#f4f7fa)}
+.grip .ph{display:none}
+.grip .veil{position:absolute;inset:0;z-index:1;background:rgba(244,247,250,.06)}
+
+.depth{background:radial-gradient(65% 18% at 74% 3%,rgba(255,255,255,.52),rgba(170,245,255,.22) 48%,transparent 75%),linear-gradient(180deg,#48d6f4 0%,#26c5f5 28%,#18b0ef 56%,#1188dc 82%,#0a4ca8 100%);height:300vh}
+.depth .rays{opacity:.14}
+.depth .lab{position:absolute;left:6vw;color:#fff;font-size:10px;letter-spacing:.28em}
+.depth .lab h3{font-weight:200;font-size:clamp(26px,7vw,58px);letter-spacing:.06em;line-height:.98;margin-top:6px;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:1.3px #fff}
+.depth .lab p{margin-top:8px;font-size:11px;letter-spacing:.04em;max-width:205px;opacity:.92;line-height:1.6}
+.depth .lab em{display:block;font-style:normal;font-size:10px;letter-spacing:.24em;color:#eaf7ff;margin-top:6px;font-weight:400;max-width:220px;line-height:1.4}
+.depth .side{position:absolute;left:6vw;top:92vh;max-width:210px;color:#eaf7ff;font-size:10px;letter-spacing:.14em;line-height:1.6;opacity:.82}
+
+.bench{background:#e7ecf2}
+.bench .ph{background-image:url('../assets/photo/bench.jpg');background-size:cover;background-position:48% 58%}
+.bench .veil{position:absolute;inset:0;z-index:1;background:rgba(244,247,250,.06)}
+.band{position:absolute;left:0;right:0;bottom:0;top:auto;height:24%;background:rgba(25,181,224,.95);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 6vw;z-index:2}
+.band h2{position:static;max-width:none;font-weight:200;letter-spacing:.05em;font-size:clamp(24px,6vw,68px);line-height:1;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.4px #fff;flex:1 1 auto}
+.band .small{position:static;flex:0 1 42%;max-width:240px;color:#f3fbff;font-size:10px;line-height:1.5;text-shadow:none}
+
+.ask{background:var(--paper)}
+.ask h2{position:absolute;font-weight:200;font-size:clamp(28px,7.2vw,76px);line-height:1.02;left:6vw;top:14%;max-width:44%;text-transform:uppercase;letter-spacing:.03em}
+.ask .sub{position:absolute;left:6vw;top:44%;max-width:42%;font-size:11px;line-height:1.5;color:#5a7491}
+.ask form{position:absolute;right:6vw;top:16%;width:42%;max-width:300px;display:grid;gap:12px}
+.ask input,.ask textarea{border:0;border-bottom:1px solid #9bb0c8;background:none;padding:9px 0;font:inherit;font-size:11px;color:var(--ink);width:100%}
+.ask button:disabled{opacity:.85}.ask button{background:var(--cyan);color:#fff;border:0;border-radius:4px;padding:11px;letter-spacing:.18em;font-size:10px;cursor:default}
+.foot{position:absolute;bottom:2.5%;left:6vw;font-weight:200;font-size:min(11.8vw,190px);letter-spacing:.09em;line-height:1;color:transparent;-webkit-text-stroke:1.2px var(--ink)}
+
+.end{background:#099ee8}
+.end .ph{inset:auto;left:50%;top:50%;width:1120px;height:1120px;background-image:url('../assets/photo/end.jpg');background-size:cover;background-position:22% 48%;transform:translate(-50%,-50%) rotate(-54deg);filter:contrast(1.95) brightness(.78) saturate(1.5) hue-rotate(18deg)}
+.end .veil{position:absolute;inset:0;z-index:1;background:radial-gradient(85% 60% at 18% 66%,rgba(28,225,255,.32),transparent 58%),linear-gradient(180deg,rgba(0,122,240,.22) 0%,rgba(0,175,255,.05) 55%,rgba(0,100,220,.30) 100%)}
+
+@media(max-width:700px){
+  .hero h1.hollow{top:36%;font-size:11.6vw;letter-spacing:.08em;text-indent:.08em}
+  .hero p{top:calc(36% + 11.6vw*.95 + 12px);font-size:10px;letter-spacing:.22em}
+  .white>.c>h2{max-width:88%;font-size:clamp(26px,6.8vw,40px)}
+  .small{max-width:210px}
+  .ask h2{top:14%;font-size:clamp(26px,6.8vw,38px);max-width:44%}
+  .ask .sub{top:34%;max-width:42%;font-size:10px}
+  .ask form{top:16%;right:6vw;left:auto;width:42%}
+  .band{height:23%;padding:0 5vw}
+  .band h2{font-size:clamp(22px,5.6vw,30px)}
+  .band .small{font-size:9.5px;flex:0 1 46%}
+}
+@media(prefers-reduced-motion:reduce){.hint{animation:none}}
+</style></head><body>
+<nav><b>TIDEWRIGHT</b><span class="ar">سنانير &nbsp; طعوم &nbsp; ورشة</span></nav>
+<canvas id="gl"></canvas>
+
+<section class="hero" data-s="0"><div class="ph"></div><video class="phv" autoplay muted playsinline preload="auto" src="../assets/video/hero_seq.mp4"></video><div class="veil"></div><div class="rays"></div><div class="c"><h1 class="hollow w">TIDEWRIGHT</h1><p class="ar">سنانير مصنوعة يدويًا للمياه المفتوحة</p></div><div class="hint ar">مرّر</div></section>
+<section class="splash"><div class="ph"></div><video class="phv" autoplay muted loop playsinline preload="auto" src="../assets/video/splash.mp4"></video><div class="veil"></div></section>
+<section class="cast"><div class="ph"></div><div class="veil"></div></section>
+<section class="sky"><div class="ph"></div><div class="veil"></div></section>
+<section class="white"><div class="c"><h2 class="hollow d ar">الدقة<br>في المكان<br>الصحيح</h2><a class="btn ar" style="left:6vw;bottom:14%" href="#ask">شاهد السنانير</a><p class="small ar" style="left:6vw;top:34%">بلانك سبينينج سبعة أقدام، أكشن سريع، حلقات تيتانيوم، ويد من الكورك وإسفنج EVA.</p></div></section>
+<section class="grip"><div class="ph"></div><div class="veil"></div></section>
+<section class="white"><div class="c"><h2 class="hollow d ar">مقعد مشغول بدقة،<br>وحلقات<br>ملفوفة يدويًا.</h2><p class="small ar" style="right:6vw;bottom:14%">مقعد ماكينة مشغول بمخرطة. كل جزء يُوزن قبل أن يُلف.</p></div></section>
+<section class="depth" data-depth><div class="rays"></div><div class="c" style="height:300vh">
+ <div class="lab" style="top:18vh">01<h3 class="ar">السطح</h3><em class="ar">حيث ما زال الضوء يصل</em><p class="ar">طعوم سطحية وضحلة. خفيفة، سريعة، وصوتها عالٍ.</p></div>
+ <div class="side ar">ثلاثة أعماق. بلانك واحد. كل طُعم مضبوط ليحافظ على مساره في عمود المياه.</div>
+ <div class="lab" style="top:130vh">02<h3 class="ar">المياه المتوسطة</h3><p class="ar">طعوم معلّقة تحافظ على خطها وسط التيار.</p></div>
+ <div class="lab" style="top:262vh">03<h3 class="ar">المياه الأعمق</h3><p class="ar">عدة أثقل للأماكن التي تنتظر فيها الأسماك الكبيرة.</p></div>
+</div></section>
+<section class="bench"><div class="ph"></div><div class="veil"></div><div class="band"><h2 class="hollow w ar">مصنوع ببطء.<br>طاولة واحدة.</h2><p class="small ar">حلقات ملفوفة يدويًا تُترك لتجف طوال الليل. مقاعد الماكينات تُثبَّت واحدًا واحدًا.</p></div></section>
+<section class="ask" id="ask"><div class="c"><h2 class="hollow d ar">اسألنا<br>عن<br>مياهك.</h2><p class="sub ar">أخبرنا ماذا تصطاد وسنرشّح لك البلانك المناسب.</p><form onsubmit="return false"><input class="ar" placeholder="الاسم"><input class="ar" placeholder="البريد الإلكتروني"><textarea class="ar" rows="3" placeholder="أين تصطاد؟"></textarea><button class="ar" disabled title="نسخة تجريبية فقط">إرسال (تجريبي)</button></form><div class="foot">TIDEWRIGHT</div></div></section>
+<section class="end"><div class="ph"></div><div class="veil"></div></section>
+<script type="importmap">{"imports":{"three":"../vendor/three.module.min.js"}}</script>
+<script type="module" src="app.js"></script>
+</body></html>
