@@ -82,6 +82,8 @@ background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(255,255,255,
 .ask input,.ask textarea{border:0;border-bottom:1px solid #9bb0c8;background:none;padding:9px 0;font:inherit;font-size:11px;color:var(--ink);width:100%}
 .ask button:disabled{opacity:.85}.ask button{background:var(--cyan);color:#fff;border:0;border-radius:4px;padding:11px;letter-spacing:.18em;font-size:10px;cursor:default}
 .foot{position:absolute;bottom:2.5%;left:6vw;font-weight:200;font-size:min(11.8vw,190px);letter-spacing:.09em;line-height:1;color:transparent;-webkit-text-stroke:1.2px var(--ink)}
+.credits{position:absolute;bottom:2.2%;left:6vw;right:6vw;z-index:2;font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.75);line-height:1.6;text-shadow:0 1px 8px rgba(3,20,50,.5)}
+.credits a{color:rgba(255,255,255,.9)}
 
 .end{background:#099ee8}
 .end .ph{inset:auto;left:50%;top:50%;width:1120px;height:1120px;background-image:url('../assets/photo/end.jpg');background-size:cover;background-position:22% 48%;transform:translate(-50%,-50%) rotate(-54deg);filter:contrast(1.95) brightness(.78) saturate(1.5) hue-rotate(18deg)}
@@ -119,7 +121,7 @@ background:repeating-linear-gradient(105deg,transparent 0 60px,rgba(255,255,255,
 </div></section>
 <section class="bench"><div class="ph"></div><div class="veil"></div><div class="band"><h2 class="hollow w ar">مصنوع ببطء.<br>طاولة واحدة.</h2><p class="small ar">حلقات ملفوفة يدويًا تُترك لتجف طوال الليل. مقاعد الماكينات تُثبَّت واحدًا واحدًا.</p></div></section>
 <section class="ask" id="ask"><div class="c"><h2 class="hollow d ar">اسألنا<br>عن<br>مياهك.</h2><p class="sub ar">أخبرنا ماذا تصطاد وسنرشّح لك البلانك المناسب.</p><form onsubmit="return false"><input class="ar" placeholder="الاسم"><input class="ar" placeholder="البريد الإلكتروني"><textarea class="ar" rows="3" placeholder="أين تصطاد؟"></textarea><button class="ar" disabled title="نسخة تجريبية فقط">إرسال (تجريبي)</button></form><div class="foot">TIDEWRIGHT</div></div></section>
-<section class="end"><div class="ph"></div><div class="veil"></div></section>
+<section class="end"><div class="ph"></div><div class="veil"></div><div class="credits">Photos: "Catch of the Day" by Thomas Leuthard, <a href="https://www.flickr.com/photos/41346951@N05/16740495771" rel="noopener">CC BY 2.0</a> · "Megalops atlanticus" by Mister.Tee, <a href="https://commons.wikimedia.org/wiki/File:Megalops_atlanticus_(5454232020).jpg" rel="noopener">CC BY 2.0</a></div></section>
 <script type="importmap">{"imports":{"three":"../vendor/three.module.min.js"}}</script>
 <script type="module" src="app.js"></script>
 </body></html>
